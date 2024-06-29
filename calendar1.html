@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .container {
+     display: flex;
+     align-items: center;
+     flex-direction: column;
+}
+ .calendar > .nav {
+     align-items: center;
+}
+ .calendar > div {
+     display: flex;
+     justify-content: space-evenly;
+}
+ .calendar > div > div {
+     padding: 12px;
+}
+ .calendar > .header > div, .calendar > .body > div {
+     flex: 1 0 120px;
+     border-right: 1px solid #e6e6e6;
+}
+ .fas:focus {
+     outline: none;
+     opacity: 1;
+}
+</style>
+
+<body>
+    <div class="container">
+        <div class="calendar">
+          <div class="nav">
+            <i id="prev" class="fas fa-arrow-left arrow" tabindex="0"></i>
+            <div class="calendar-icon-container">
+              <h1 id="date-range"></h1>
+              <div>
+                <div id="calendar-popover" class="calendar-popover hidden">
+                </div>
+              </div>
+            </div>
+            <i id="next" class="fas fa-arrow-right arrow" tabindex="0"></i>
+          </div>
+          <div id="header" class="header">
+            <div>
+              <div>Monday</div>
+              <div class="date"></div>
+            </div>
+            <div>
+              <div>Tuesday</div>
+              <div class="date"></div>
+            </div>
+            <div>
+              <div>Wednesday</div>
+              <div class="date"></div>
+            </div>
+            <div>
+              <div>Thursday</div>
+              <div class="date"></div>
+            </div>
+            <div>
+              <div>Friday</div>
+              <div class="date"></div>
+            </div>
+            <div>
+              <div>Saturday</div>
+              <div class="date"></div>
+            </div>
+            <div>
+              <div>Sunday</div>
+              <div class="date"></div>
+            </div>
+          </div>
+          <div class="body">
+            <div>
+                <li>1</li>
+                <li>1</li>
+                <li>1</li>
+            </div>
+            <div>
+                <li>text</li>
+            </div>
+            <div>
+                <li>text</li>
+            </div>
+            <div>
+                <li>....</li>
+            </div>
+            <div>
+                <li>text</li>
+            </div>
+            <div>
+                <li>text</li>
+            </div>
+            <div>
+                <li>text</li>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <script>
+        (function() {
+  var mondayRef = 1;
+  var sundayRef = 7;
+  
+  var prev = document.getElementById('prev');
+  var next = document.getElementById('next');
+  var dateRange = document.getElementById('date-range');
+  var dateViews = document.getElementsByClassName('date');
+  var daysOfMonth = document.getElementById('days-of-month');
+  var calendarPopover = document.getElementById('calendar-popover');
+  
+ 
+  function adjustCalendar(monRef, sunRef) {
+    var monday = moment().day(monRef);
+    var sunday = moment().day(sunRef);
+    
+    if (monRef > 0) {
+      for (var date = monRef; date <= sunRef; date++) {
+        dateViews[(date - 1) % 7].innerHTML = moment().day(date).format('M[/]D');
+      }
+    } else {
+      for (var date = -monRef; date >= -sunRef; date --) {
+        dateViews[-(monRef + date)].innerHTML = moment().day(-date).format('M[/]D');
+      }
+    }
+  
+    if (monday.format('YYYY') !== sunday.format('YYYY')) {
+      dateRange.innerHTML = `${monday.format('MMMM Do, YYYY')} - ${sunday.format('MMMM Do, YYYY')}`;
+    } else {
+      dateRange.innerHTML = `${monday.format('MMMM Do')} - ${sunday.format('MMMM Do, YYYY')}`;
+    }
+  }
+  
+  // Init
+  adjustCalendar(mondayRef, sundayRef);
+  
+  next.onclick = function() {
+    mondayRef += 7;
+    sundayRef += 7;
+    adjustCalendar(mondayRef, sundayRef);
+  }
+  
+  prev.onclick = function() {
+    mondayRef -= 7;
+    sundayRef -= 7;
+    adjustCalendar(mondayRef, sundayRef);
+  }
+})();
+      </script>
+    
+</body>
+</html>
